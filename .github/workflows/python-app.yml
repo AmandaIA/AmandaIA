@@ -1,7 +1,8 @@
-name: Run Python Script
+name: Execute Python Script
 
 on:
-  workflow_dispatch: # Permite iniciar o workflow manualmente
+  repository_dispatch:
+    types: [run-python-script]
 
 jobs:
   run-python:
@@ -25,4 +26,4 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python main.py
+          python main.py '${{ github.event.client_payload }}'
