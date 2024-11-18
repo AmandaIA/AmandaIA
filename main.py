@@ -1,9 +1,12 @@
 import openai
 import os
+import sys
+import json
 
 # Configuração da API Key
-openai.api_key = os.getenv("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")
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
+# Função para executar a ação
 def execute_action(prompt):
     response = openai.Completion.create(
         model="gpt-4-turbo",
@@ -13,6 +16,8 @@ def execute_action(prompt):
     )
     return response.choices[0].text
 
-# Exemplo de uso
-prompt_text = "Qual a previsão do tempo para amanhã?"
-print(execute_action(prompt_text))
+# Recebendo a entrada do webhook
+if __name__ == "__main__":
+    data = json.loads(sys.argv[1])
+    prompt_text = data.get("prompt")
+    print(execute_action(prompt_text))
